@@ -35,7 +35,7 @@ fn bench_rectangle_classify(c: &mut Criterion) {
     )
     .expect("gate");
     let mut gates = IndexMap::new();
-    gates.insert(GateId::from("R1"), GateKind::Rectangle(gate));
+    gates.insert(GateId::from("R1"), GateKind::Rectangle(Box::new(gate)));
     let registry = GateRegistry::new(gates).expect("registry");
 
     let mut group = c.benchmark_group("gates");

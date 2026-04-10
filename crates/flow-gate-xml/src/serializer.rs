@@ -2,7 +2,7 @@ use std::fmt::Write;
 
 use flow_gate_core::{
     gate::{EllipsoidDimension, GateKind, PolygonDimension, PolygonGate, RectangleDimension},
-    Gate, FlowGateError, TransformKind,
+    FlowGateError, Gate, TransformKind,
 };
 
 use crate::{namespace, parse_bound_dimension, BoundDimension, FlowGateDocument};
@@ -154,7 +154,10 @@ pub fn serialize_document(doc: &FlowGateDocument) -> Result<String, FlowGateErro
     Ok(out)
 }
 
-fn write_transform_element(out: &mut String, transform: &TransformKind) -> Result<(), FlowGateError> {
+fn write_transform_element(
+    out: &mut String,
+    transform: &TransformKind,
+) -> Result<(), FlowGateError> {
     match transform {
         TransformKind::Logicle(t) => {
             writeln!(
@@ -363,7 +366,7 @@ fn write_unbounded_dimension(
     out: &mut String,
     doc: &FlowGateDocument,
     dim: &impl DimensionLike,
-    indent_polygon: bool,
+    _indent_polygon: bool,
 ) -> Result<(), FlowGateError> {
     let mut attrs = String::new();
     if let Some(tid) = dim.transform().and_then(|t| transform_id_for(doc, &t)) {
@@ -376,7 +379,7 @@ fn write_unbounded_dimension(
     }
 
     let (comp_ref, dim_xml) = dimension_reference_xml(dim.parameter());
-    let indent = if indent_polygon { "    " } else { "    " };
+    let indent = "    ";
     writeln!(
         out,
         r#"{indent}<gating:dimension gating:compensation-ref="{}"{}>"#,

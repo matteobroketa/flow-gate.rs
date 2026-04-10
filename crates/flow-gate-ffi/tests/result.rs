@@ -1,4 +1,4 @@
-use flow_gate_core::{GateId, FlowGateError, ParameterName};
+use flow_gate_core::{FlowGateError, GateId, ParameterName};
 use flow_gate_ffi::{flow_gate_ffi_error_free, FfiError};
 
 #[test]
@@ -12,7 +12,10 @@ fn ffi_error_codes_are_stable() {
         ),
         (FlowGateError::XmlParse("x".into()), 4_u32),
         (FlowGateError::NotPositiveDefinite, 5_u32),
-        (FlowGateError::CyclicGateReference(GateId::from("G1")), 6_u32),
+        (
+            FlowGateError::CyclicGateReference(GateId::from("G1")),
+            6_u32,
+        ),
         (
             FlowGateError::UnknownGateReference(GateId::from("G1"), GateId::from("G9")),
             7_u32,
@@ -21,8 +24,14 @@ fn ffi_error_codes_are_stable() {
             FlowGateError::MissingAttribute("id".into(), "Gate".into()),
             8_u32,
         ),
-        (FlowGateError::InvalidFloat("x".into(), "value".into()), 9_u32),
-        (FlowGateError::BooleanNotArity(GateId::from("G2"), 2), 10_u32),
+        (
+            FlowGateError::InvalidFloat("x".into(), "value".into()),
+            9_u32,
+        ),
+        (
+            FlowGateError::BooleanNotArity(GateId::from("G2"), 2),
+            10_u32,
+        ),
         (
             FlowGateError::BooleanEmptyOperands(GateId::from("G3")),
             11_u32,

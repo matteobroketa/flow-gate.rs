@@ -9,7 +9,7 @@ use flow_fcs::{
     keyword::{FloatKeyword, IntegerableKeyword, MixedKeyword, StringableKeyword},
     Fcs, Keyword,
 };
-use flow_gate::{EventMatrix, GateId, FlowGateDocument, ParameterName, SpectrumMatrixSpec};
+use flow_gate::{EventMatrix, FlowGateDocument, GateId, ParameterName, SpectrumMatrixSpec};
 
 #[test]
 fn set1_ellipse_and_ellipsoid_vectors_match_expected_when_data_available() {

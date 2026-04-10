@@ -7,7 +7,7 @@ mod serializer;
 use std::collections::HashMap;
 
 use flow_gate_core::{
-    gate::GateKind, BitVec, EventMatrix, EventMatrixView, GateId, GateRegistry, FlowGateError,
+    gate::GateKind, BitVec, EventMatrix, EventMatrixView, FlowGateError, GateId, GateRegistry,
     ParameterName, TransformKind,
 };
 

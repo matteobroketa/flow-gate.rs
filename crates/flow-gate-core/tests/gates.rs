@@ -1,6 +1,6 @@
 use flow_gate_core::{
     BooleanGate, BooleanOp, BooleanOperand, EllipsoidCovariance, EllipsoidDimension, EllipsoidGate,
-    EventMatrix, Gate, GateId, GateKind, GateRegistry, FlowGateError, ParameterName,
+    EventMatrix, FlowGateError, Gate, GateId, GateKind, GateRegistry, ParameterName,
     PolygonDimension, PolygonGate, RectangleDimension, RectangleGate,
 };
 use indexmap::IndexMap;
@@ -335,8 +335,8 @@ fn child_gate_membership_is_masked_by_parent() {
     )
     .expect("child");
     let mut gates = IndexMap::new();
-    gates.insert(GateId::from("P"), GateKind::Rectangle(parent));
-    gates.insert(GateId::from("C"), GateKind::Rectangle(child));
+    gates.insert(GateId::from("P"), GateKind::Rectangle(Box::new(parent)));
+    gates.insert(GateId::from("C"), GateKind::Rectangle(Box::new(child)));
     let registry = GateRegistry::new(gates).expect("registry");
 
     let matrix =

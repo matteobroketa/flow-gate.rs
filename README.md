@@ -210,7 +210,11 @@ The library uses `flow_gate_core::FlowGateError` (backed by `thiserror`) for all
 
 ### VALIDATION
 
-The official ISAC Gating-ML 2.0 compliance test corpus is bundled in this repository. Run:
+The official ISAC Gating-ML 2.0 compliance test corpus is available from the
+[ISAC Gating-ML specification download](https://fcsfiles.isac-net.org/).
+
+To validate, download the spec archive, extract the `Compliance tests` directory
+to `validation-suite/data/`, then run:
 
 ```bash
 cargo build --release -p flow-gate --bin flow_gate_compliance_runner
@@ -218,8 +222,6 @@ target/release/flow_gate_compliance_runner \
     --root validation-suite/data \
     --output-json report.json
 ```
-
-The authoritative specification archive is preserved at `official-spec/GatingML_2.0_Specification.20130122.full.zip`.
 
 ### CONTRIBUTING
 

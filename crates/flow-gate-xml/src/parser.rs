@@ -9,7 +9,7 @@ use flow_gate_core::{
         FASinhTransform, HyperlogTransform, LinearTransform, LogarithmicTransform, LogicleParams,
         LogicleTransform,
     },
-    GateId, GateRegistry, FlowGateError, ParameterName, TransformKind,
+    FlowGateError, GateId, GateRegistry, ParameterName, TransformKind,
 };
 use indexmap::IndexMap;
 use quick_xml::{
@@ -467,10 +467,9 @@ fn parse_optional_f64_attr(
 ) -> Result<Option<f64>, FlowGateError> {
     match optional_attr(attrs, local, allowed_ns) {
         Some(raw) if raw.trim().is_empty() => Ok(None),
-        Some(raw) => raw
-            .parse::<f64>()
-            .map(Some)
-            .map_err(|_| FlowGateError::InvalidFloat(raw.to_string(), format!("{element}:{local}"))),
+        Some(raw) => raw.parse::<f64>().map(Some).map_err(|_| {
+            FlowGateError::InvalidFloat(raw.to_string(), format!("{element}:{local}"))
+        }),
         None => Ok(None),
     }
 }
@@ -774,7 +773,10 @@ fn parse_fcs_dimension_list(
     Ok(out)
 }
 
-fn parse_spectrum_row(reader: &mut NsReader<&[u8]>, source: &str) -> Result<Vec<f64>, FlowGateError> {
+fn parse_spectrum_row(
+    reader: &mut NsReader<&[u8]>,
+    source: &str,
+) -> Result<Vec<f64>, FlowGateError> {
     let mut values = Vec::new();
     let mut buf = Vec::new();
     loop {
@@ -941,11 +943,14 @@ fn interval_for_location(
             return Ok((Some(lo), Some(hi)));
         }
     }
-    Ok((Some(*sorted.last().ok_or_else(|| {
-        FlowGateError::InvalidGate(
-            "interval_for_location produced no valid values after filtering".to_string(),
-        )
-    })?), None))
+    Ok((
+        Some(*sorted.last().ok_or_else(|| {
+            FlowGateError::InvalidGate(
+                "interval_for_location produced no valid values after filtering".to_string(),
+            )
+        })?),
+        None,
+    ))
 }
 
 pub fn parse_document(xml: &str) -> Result<FlowGateDocument, FlowGateError> {
@@ -1316,12 +1321,14 @@ impl FlowGateParser {
                 Event::Start(e) => {
                     if ns_is(&ns, NS_GATING) {
                         parsed_gate = Some(match e.local_name().as_ref() {
-                            b"RectangleGate" => GateKind::Rectangle(self.parse_rectangle_gate(
-                                reader,
-                                source,
-                                id.clone(),
-                                parent_id.clone(),
-                            )?),
+                            b"RectangleGate" => {
+                                GateKind::Rectangle(Box::new(self.parse_rectangle_gate(
+                                    reader,
+                                    source,
+                                    id.clone(),
+                                    parent_id.clone(),
+                                )?))
+                            }
                             b"PolygonGate" => GateKind::Polygon(self.parse_polygon_gate(
                                 reader,
                                 source,
@@ -1389,7 +1396,7 @@ impl FlowGateParser {
         match start.local_name().as_ref() {
             b"RectangleGate" => {
                 let gate = self.parse_rectangle_gate(reader, source, id.clone(), parent_id)?;
-                self.gates.insert(id, GateKind::Rectangle(gate));
+                self.gates.insert(id, GateKind::Rectangle(Box::new(gate)));
             }
             b"PolygonGate" => {
                 let gate = self.parse_polygon_gate(reader, source, id.clone(), parent_id)?;
@@ -1489,7 +1496,7 @@ impl FlowGateParser {
                 });
             }
             let gate = RectangleGate::new(qid.clone(), parent_id.clone(), dims)?;
-            out.push((qid, GateKind::Rectangle(gate)));
+            out.push((qid, GateKind::Rectangle(Box::new(gate))));
         }
 
         Ok(out)

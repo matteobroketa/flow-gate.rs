@@ -13,9 +13,12 @@ use crate::gate::{
 use crate::traits::{ApplyGate, BitVec, Gate, GateId, ParameterName, Transform};
 use crate::transform::TransformKind;
 
+// All four variants are required by the Gating-ML 2.0 spec.
+// The enum is used behind references in all hot paths, so size is not a concern.
+#[allow(clippy::large_enum_variant)]
 #[derive(Debug, Clone)]
 pub enum GateKind {
-    Rectangle(RectangleGate),
+    Rectangle(Box<RectangleGate>),
     Polygon(PolygonGate),
     Ellipsoid(EllipsoidGate),
     Boolean(BooleanGate),
@@ -256,9 +259,7 @@ fn classify_spatial_gate_view(
         .map(|event_idx| {
             let mut coords = SmallVec::<[f64; 8]>::with_capacity(dim_indices.len());
             for (dim_idx, &param_idx) in dim_indices.iter().enumerate() {
-                let raw = matrix
-                    .value_at(event_idx, param_idx)
-                    .unwrap_or(f64::NAN);
+                let raw = matrix.value_at(event_idx, param_idx).unwrap_or(f64::NAN);
                 let value = transforms
                     .get(dim_idx)
                     .copied()

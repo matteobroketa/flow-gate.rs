@@ -10,7 +10,7 @@ use flow_fcs::{
     Fcs, Keyword,
 };
 use flow_gate::{
-    BitVec, BooleanGate, BooleanOp, EventMatrix, Gate, GateId, GateKind, FlowGateDocument,
+    BitVec, BooleanGate, BooleanOp, EventMatrix, FlowGateDocument, Gate, GateId, GateKind,
     ParameterName, SpectrumMatrixSpec, Transform, TransformKind,
 };
 use serde::Serialize;

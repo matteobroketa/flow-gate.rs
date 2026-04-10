@@ -1,6 +1,6 @@
 use std::collections::{HashMap, HashSet};
 
-use flow_gate_core::{EventMatrix, EventMatrixView, Gate, FlowGateError, ParameterName};
+use flow_gate_core::{EventMatrix, EventMatrixView, FlowGateError, Gate, ParameterName};
 
 use crate::{parse_bound_dimension, BoundDimension, FlowGateDocument, SpectrumMatrixSpec};
 
@@ -172,7 +172,8 @@ fn resolve_fcs_column(
                 materialize_compensation(raw_columns, n_events, spec)?
             } else {
                 return Err(FlowGateError::InvalidGate(
-                    "FCS compensation requested but no spillover matrix available in FCS data".to_string(),
+                    "FCS compensation requested but no spillover matrix available in FCS data"
+                        .to_string(),
                 ));
             }
         } else {

@@ -84,7 +84,8 @@ impl EllipsoidCovariance {
             ));
         }
 
-        let inv = invert_square(values, n).map_err(|e| FlowGateError::InvalidGate(e.to_string()))?;
+        let inv =
+            invert_square(values, n).map_err(|e| FlowGateError::InvalidGate(e.to_string()))?;
         Ok(Self {
             metric: EllipsoidMetric::GeneralInverse { inv },
             matrix_full: values.to_vec(),

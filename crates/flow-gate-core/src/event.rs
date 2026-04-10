@@ -41,7 +41,13 @@ unsafe impl<'a> Send for MatrixView<'a> {}
 unsafe impl<'a> Sync for MatrixView<'a> {}
 
 impl<'a> MatrixView<'a> {
-    /// SAFETY: Caller must guarantee the pointer points to at least `n_rows * n_cols` valid f64 values.
+    /// Creates a non-owning read-only view over a raw `f64` buffer.
+    ///
+    /// # Safety
+    /// - `ptr` must point to at least `n_rows * n_cols` valid, properly aligned
+    ///   `f64` values.
+    /// - The underlying data must remain valid for the lifetime `'a` of this view.
+    /// - The underlying data must not be concurrently mutated while this view is in use.
     pub unsafe fn from_raw(
         ptr: *const f64,
         n_rows: usize,
@@ -57,6 +63,10 @@ impl<'a> MatrixView<'a> {
         }
     }
 
+    /// Returns the value at `(row, col)` without bounds checking.
+    ///
+    /// # Safety
+    /// Caller must guarantee that `row < n_rows` and `col < n_cols`.
     #[inline]
     pub unsafe fn get_unchecked(&self, row: usize, col: usize) -> f64 {
         match self.layout {

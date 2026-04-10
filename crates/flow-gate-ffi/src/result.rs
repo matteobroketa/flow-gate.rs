@@ -13,11 +13,10 @@ pub struct FfiError {
 
 impl FfiError {
     pub fn from_gating_error(err: &FlowGateError) -> Self {
-        let msg = CString::new(err.to_string())
-            .unwrap_or_else(|_| unsafe {
-                // SAFETY: This literal contains no null bytes, so from_raw_unchecked is safe.
-                CString::from_vec_unchecked(b"unknown error".to_vec())
-            });
+        let msg = CString::new(err.to_string()).unwrap_or_else(|_| unsafe {
+            // SAFETY: This literal contains no null bytes, so from_raw_unchecked is safe.
+            CString::from_vec_unchecked(b"unknown error".to_vec())
+        });
         Self {
             message: msg.into_raw(),
             code: error_code(err),

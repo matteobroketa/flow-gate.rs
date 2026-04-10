@@ -12,7 +12,7 @@ version = "0.1.0"
 edition = "2021"
 rust-version = "1.75"
 license = "MIT"
-repository = "https://github.com/matteothebroketa/flow-gate.rs"
+repository = "https://github.com/matteobroketa/flow-gate.rs"
 documentation = "https://docs.rs/flow-gate-core"
 readme = "README.md"
 
