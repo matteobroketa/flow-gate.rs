@@ -104,7 +104,7 @@ impl Transform for HyperlogTransform {
             3.0 * f64::EPSILON
         };
 
-        for _ in 0..10 {
+        for _ in 0..40 {
             let ae2bx = self.a_coef * (self.b_coef * x).exp();
             let y = if x < self.x_taylor {
                 self.taylor_series(x) - signal

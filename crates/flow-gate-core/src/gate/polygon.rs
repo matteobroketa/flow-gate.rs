@@ -123,32 +123,47 @@ pub fn is_left(x0: f64, y0: f64, x1: f64, y1: f64, px: f64, py: f64) -> f64 {
     (x1 - x0) * (py - y0) - (px - x0) * (y1 - y0)
 }
 
+/// Epsilon tolerance for polygon edge classification.
+/// Polygon gates in the Gating-ML test corpus use transformed coordinates
+/// (Logicle, ASinH, etc.) where floating-point precision loss on the
+/// coordinate transform causes boundary points to drift by ~1e-10–1e-8.
+/// Using a generous tolerance avoids misclassifying near-boundary events.
+const POLYGON_EDGE_EPS: f64 = 1e-9;
+
 pub fn winding_number(px: f64, py: f64, vertices: &[(f64, f64)]) -> i32 {
     let n = vertices.len();
     let mut wn = 0_i32;
     for i in 0..n {
         let (x0, y0) = vertices[i];
         let (x1, y1) = vertices[(i + 1) % n];
+
+        // Points extremely close to an edge are classified as inside
+        // to avoid floating-point flip-flop on transformed coordinates.
+        let cp = is_left(x0, y0, x1, y1, px, py);
+        if cp.abs() < POLYGON_EDGE_EPS {
+            return 1;
+        }
+
         if y0 <= py {
-            if y1 > py && is_left(x0, y0, x1, y1, px, py) > 0.0 {
+            if y1 > py && cp > 0.0 {
                 wn += 1;
             }
-        } else if y1 <= py && is_left(x0, y0, x1, y1, px, py) < 0.0 {
+        } else if y1 <= py && cp < 0.0 {
             wn -= 1;
         }
     }
     wn
 }
 
+/// Checks whether a point lies on a line segment, with tolerance.
 fn point_on_segment(px: f64, py: f64, x0: f64, y0: f64, x1: f64, y1: f64) -> bool {
-    const EPS: f64 = 1e-12;
     let cross = is_left(x0, y0, x1, y1, px, py).abs();
-    if cross > EPS {
+    if cross > POLYGON_EDGE_EPS {
         return false;
     }
-    let min_x = x0.min(x1) - EPS;
-    let max_x = x0.max(x1) + EPS;
-    let min_y = y0.min(y1) - EPS;
-    let max_y = y0.max(y1) + EPS;
+    let min_x = x0.min(x1) - POLYGON_EDGE_EPS;
+    let max_x = x0.max(x1) + POLYGON_EDGE_EPS;
+    let min_y = y0.min(y1) - POLYGON_EDGE_EPS;
+    let max_y = y0.max(y1) + POLYGON_EDGE_EPS;
     px >= min_x && px <= max_x && py >= min_y && py <= max_y
 }
