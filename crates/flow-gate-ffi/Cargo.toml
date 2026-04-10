@@ -1,0 +1,7 @@
+[package]
+name = "flow-gate-ffi"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+flow-gate-core = { path = "../flow-gate-core" }

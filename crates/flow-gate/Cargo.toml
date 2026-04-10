@@ -1,0 +1,14 @@
+[package]
+name = "flow-gate"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+flow-gate-core = { path = "../flow-gate-core" }
+flow-gate-xml = { path = "../flow-gate-xml" }
+anyhow = "1.0"
+flow-fcs = "0.2.2"
+csv.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2 = "0.10"

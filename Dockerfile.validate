@@ -1,0 +1,14 @@
+FROM rust:1.84-slim AS builder
+
+WORKDIR /build
+COPY . .
+RUN cargo build --release -p flow-gate --bin flow_gate_compliance_runner
+
+FROM debian:bookworm-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /build/target/release/flow_gate_compliance_runner /usr/local/bin/
+COPY validation-suite/data /data
+
+ENTRYPOINT ["flow_gate_compliance_runner", "--root", "/data", "--output-json", "/report.json"]
