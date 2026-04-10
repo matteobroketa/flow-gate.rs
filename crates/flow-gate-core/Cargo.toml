@@ -1,7 +1,15 @@
 [package]
 name = "flow-gate-core"
-version = "0.1.0"
-edition = "2021"
+description = "Pure-Rust implementation of the ISAC Gating-ML 2.0 gate evaluation engine — transforms, gates, and event matrices"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords = ["flow-cytometry", "gating-ml", "bioinformatics", "science", "cytometry"]
+categories = ["science", "mathematics", "algorithms"]
 
 [dependencies]
 rayon = { workspace = true }

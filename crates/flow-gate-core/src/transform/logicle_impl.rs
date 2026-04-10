@@ -1,3 +1,8 @@
+// Public API for downstream consumers (e.g. visualization libraries
+// that need axis tick generation). Items are not used by the core
+// library itself but are intentionally exposed.
+#![allow(dead_code)]
+
 use rayon::prelude::*;
 
 pub const LOGICLE_IMPL_VERSION: &str = "logicle_v1";

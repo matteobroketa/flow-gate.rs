@@ -1,5 +1,5 @@
 use flow_gate_core::{GateId, FlowGateError, ParameterName};
-use flow_gate_ffi::{ffi_error_free, FfiError};
+use flow_gate_ffi::{flow_gate_ffi_error_free, FfiError};
 
 #[test]
 fn ffi_error_codes_are_stable() {
@@ -32,9 +32,9 @@ fn ffi_error_codes_are_stable() {
     ];
 
     for (err, expected_code) in samples {
-        let ffi = FfiError::from_gating_error(&err);
+        let mut ffi = FfiError::from_gating_error(&err);
         assert_eq!(ffi.code, expected_code);
         // SAFETY: message pointer was allocated by FfiError::from_gating_error.
-        unsafe { ffi_error_free(ffi) };
+        unsafe { flow_gate_ffi_error_free(&mut ffi) };
     }
 }

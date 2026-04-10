@@ -95,14 +95,16 @@ impl Gate for GateKind {
 }
 
 impl ApplyGate for GateKind {
-    fn classify(&self, matrix: &EventMatrix, gate_map: &GateRegistry) -> BitVec {
-        match gate_map.classify_all(matrix) {
-            Ok(results) => results
-                .get(self.gate_id())
-                .cloned()
-                .unwrap_or_else(|| BitVec::repeat(false, matrix.n_events)),
-            Err(_) => BitVec::repeat(false, matrix.n_events),
-        }
+    fn classify(
+        &self,
+        matrix: &EventMatrix,
+        gate_map: &GateRegistry,
+    ) -> Result<BitVec, FlowGateError> {
+        let results = gate_map.classify_all(matrix)?;
+        Ok(results
+            .get(self.gate_id())
+            .cloned()
+            .unwrap_or_else(|| BitVec::repeat(false, matrix.n_events)))
     }
 }
 
@@ -254,7 +256,9 @@ fn classify_spatial_gate_view(
         .map(|event_idx| {
             let mut coords = SmallVec::<[f64; 8]>::with_capacity(dim_indices.len());
             for (dim_idx, &param_idx) in dim_indices.iter().enumerate() {
-                let raw = matrix.value_at(event_idx, param_idx);
+                let raw = matrix
+                    .value_at(event_idx, param_idx)
+                    .unwrap_or(f64::NAN);
                 let value = transforms
                     .get(dim_idx)
                     .copied()

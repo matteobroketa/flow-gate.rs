@@ -941,7 +941,11 @@ fn interval_for_location(
             return Ok((Some(lo), Some(hi)));
         }
     }
-    Ok((Some(*sorted.last().expect("non-empty")), None))
+    Ok((Some(*sorted.last().ok_or_else(|| {
+        FlowGateError::InvalidGate(
+            "interval_for_location produced no valid values after filtering".to_string(),
+        )
+    })?), None))
 }
 
 pub fn parse_document(xml: &str) -> Result<FlowGateDocument, FlowGateError> {

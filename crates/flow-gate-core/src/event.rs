@@ -15,6 +15,12 @@ pub enum MatrixLayout {
 }
 
 /// Non-owning read-only matrix view used by FFI bridges.
+///
+/// # Safety Contract
+/// The caller must guarantee that:
+/// - `ptr` points to at least `n_rows * n_cols` valid, properly aligned `f64` values
+/// - The underlying data remains valid for the lifetime `'a`
+/// - The underlying data is not being mutated concurrently while this view is in use
 #[derive(Debug, Clone, Copy)]
 pub struct MatrixView<'a> {
     pub ptr: *const f64,
@@ -24,9 +30,14 @@ pub struct MatrixView<'a> {
     _lifetime: PhantomData<&'a f64>,
 }
 
-// SAFETY: MatrixView is read-only and caller upholds pointer/lifetime validity.
+// SAFETY: MatrixView only provides read-only access through shared references.
+// The safety contract requires that the underlying data is valid for the
+// declared lifetime and is not being concurrently mutated. When constructed
+// from a `&[f64]` or `&Vec<f64>`, these invariants are upheld by Rust's
+// borrowing rules. FFI callers must independently guarantee thread safety.
 unsafe impl<'a> Send for MatrixView<'a> {}
-// SAFETY: MatrixView is read-only and caller upholds pointer/lifetime validity.
+// SAFETY: Multiple threads may concurrently read immutable data.
+// See Send safety rationale above.
 unsafe impl<'a> Sync for MatrixView<'a> {}
 
 impl<'a> MatrixView<'a> {
@@ -106,12 +117,15 @@ impl<'a> EventMatrixView<'a> {
         Ok(indices)
     }
 
+    /// Returns the value at the given event and parameter indices.
+    /// Returns `None` if either index is out of bounds.
     #[inline]
-    pub fn value_at(&self, event_idx: usize, param_idx: usize) -> f64 {
-        debug_assert!(event_idx < self.n_events);
-        debug_assert!(param_idx < self.n_params);
-        // SAFETY: indices are validated by caller and debug assertions above.
-        unsafe { self.view.get_unchecked(event_idx, param_idx) }
+    pub fn value_at(&self, event_idx: usize, param_idx: usize) -> Option<f64> {
+        if event_idx >= self.n_events || param_idx >= self.n_params {
+            return None;
+        }
+        // SAFETY: bounds checked above.
+        Some(unsafe { self.view.get_unchecked(event_idx, param_idx) })
     }
 
     pub fn param_names(&self) -> &[ParameterName] {

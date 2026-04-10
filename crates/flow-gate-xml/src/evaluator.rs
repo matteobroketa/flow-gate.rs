@@ -22,7 +22,9 @@ pub(crate) fn prepare_matrix_from_view(
     for (idx, name) in matrix.param_names().iter().enumerate() {
         let mut col = Vec::with_capacity(matrix.n_events);
         for event_idx in 0..matrix.n_events {
-            col.push(matrix.value_at(event_idx, idx));
+            if let Some(val) = matrix.value_at(event_idx, idx) {
+                col.push(val);
+            }
         }
         raw_columns.insert(name.as_str().to_string(), col);
     }
@@ -169,8 +171,9 @@ fn resolve_fcs_column(
             if let Some(spec) = fcs_compensation {
                 materialize_compensation(raw_columns, n_events, spec)?
             } else {
-                // FCS compensation requested but unavailable (e.g. FCS file has no spillover).
-                raw_columns.clone()
+                return Err(FlowGateError::InvalidGate(
+                    "FCS compensation requested but no spillover matrix available in FCS data".to_string(),
+                ));
             }
         } else {
             let spec = doc.spectrum_matrices.get(compensation_ref).ok_or_else(|| {

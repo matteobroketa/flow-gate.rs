@@ -1,7 +1,15 @@
 [package]
 name = "flow-gate-xml"
-version = "0.1.0"
-edition = "2021"
+description = "Gating-ML 2.0 XML parsing and serialization for flow cytometry gate documents"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords = ["flow-cytometry", "gating-ml", "xml", "bioinformatics", "parser"]
+categories = ["science", "parser-implementations", "encoding"]
 
 [dependencies]
 flow-gate-core = { path = "../flow-gate-core" }

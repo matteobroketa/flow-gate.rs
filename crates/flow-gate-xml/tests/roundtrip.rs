@@ -195,13 +195,13 @@ fn parser_accepts_official_ellipsoid3d_full_matrix_and_roundtrips() {
   xmlns:transforms="http://www.isac-net.org/std/Gating-ML/v2.0/transformations"
   xmlns:data-type="http://www.isac-net.org/std/Gating-ML/v2.0/datatypes">
   <gating:EllipsoidGate gating:id="Ellipsoid3D">
-    <gating:dimension gating:compensation-ref="FCS">
+    <gating:dimension gating:compensation-ref="uncompensated">
       <data-type:fcs-dimension data-type:name="FL3-H" />
     </gating:dimension>
-    <gating:dimension gating:compensation-ref="FCS">
+    <gating:dimension gating:compensation-ref="uncompensated">
       <data-type:fcs-dimension data-type:name="FL4-H" />
     </gating:dimension>
-    <gating:dimension gating:compensation-ref="FCS">
+    <gating:dimension gating:compensation-ref="uncompensated">
       <data-type:fcs-dimension data-type:name="FL1-H" />
     </gating:dimension>
     <gating:mean>

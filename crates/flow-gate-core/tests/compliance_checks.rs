@@ -75,10 +75,10 @@ fn from_view_supports_row_major_numpy_layout() {
         ],
     )
     .expect("matrix view");
-    assert_eq!(matrix.value_at(0, 0), 1.0);
-    assert_eq!(matrix.value_at(0, 2), 3.0);
-    assert_eq!(matrix.value_at(1, 0), 4.0);
-    assert_eq!(matrix.value_at(1, 2), 6.0);
+    assert_eq!(matrix.value_at(0, 0).unwrap(), 1.0);
+    assert_eq!(matrix.value_at(0, 2).unwrap(), 3.0);
+    assert_eq!(matrix.value_at(1, 0).unwrap(), 4.0);
+    assert_eq!(matrix.value_at(1, 2).unwrap(), 6.0);
 }
 
 #[test]
@@ -98,8 +98,8 @@ fn from_view_supports_col_major_r_layout() {
         ],
     )
     .expect("matrix view");
-    assert_eq!(matrix.value_at(0, 0), 1.0);
-    assert_eq!(matrix.value_at(0, 2), 3.0);
-    assert_eq!(matrix.value_at(1, 0), 4.0);
-    assert_eq!(matrix.value_at(1, 2), 6.0);
+    assert_eq!(matrix.value_at(0, 0).unwrap(), 1.0);
+    assert_eq!(matrix.value_at(0, 2).unwrap(), 3.0);
+    assert_eq!(matrix.value_at(1, 0).unwrap(), 4.0);
+    assert_eq!(matrix.value_at(1, 2).unwrap(), 6.0);
 }

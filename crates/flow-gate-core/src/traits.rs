@@ -3,6 +3,7 @@ use std::sync::Arc;
 
 use bitvec::{order::Lsb0, vec::BitVec as InnerBitVec};
 
+use crate::error::FlowGateError;
 use crate::event::EventMatrix;
 use crate::gate::GateRegistry;
 
@@ -93,5 +94,12 @@ pub trait Gate: Send + Sync + Debug {
 }
 
 pub trait ApplyGate: Gate {
-    fn classify(&self, matrix: &EventMatrix, gate_map: &GateRegistry) -> BitVec;
+    /// Classify events in the matrix against this gate.
+    /// Returns a `BitVec` where each bit indicates whether the corresponding
+    /// event is inside the gate.
+    fn classify(
+        &self,
+        matrix: &EventMatrix,
+        gate_map: &GateRegistry,
+    ) -> Result<BitVec, FlowGateError>;
 }

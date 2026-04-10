@@ -1,7 +1,15 @@
 [package]
 name = "flow-gate-ffi"
-version = "0.1.0"
-edition = "2021"
+description = "C-ABI foreign function interface for flow-gate, enabling Python/R bindings"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords = ["flow-cytometry", "gating-ml", "ffi", "c-abi"]
+categories = ["science", "api-bindings"]
 
 [dependencies]
 flow-gate-core = { path = "../flow-gate-core" }
