@@ -1,0 +1,45 @@
+[package]
+name = "flow-gate-core"
+description = "Pure-Rust implementation of the ISAC Gating-ML 2.0 gate evaluation engine — transforms, gates, and event matrices"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+homepage.workspace = true
+repository.workspace = true
+documentation = "https://docs.rs/flow-gate-core"
+readme.workspace = true
+keywords = ["flow-cytometry", "gating-ml", "bioinformatics", "science", "cytometry"]
+categories = ["science", "mathematics", "algorithms"]
+
+[dependencies]
+rayon = { workspace = true }
+thiserror = { workspace = true }
+smallvec = { workspace = true }
+bitvec = { workspace = true }
+indexmap = { workspace = true }
+
+[features]
+default = []
+simd = []
+polygon_scanline = []
+nalgebra = ["dep:nalgebra"]
+
+[[bench]]
+name = "transform_throughput"
+harness = false
+
+[[bench]]
+name = "gate_evaluation"
+harness = false
+
+[dependencies.nalgebra]
+version = "0.32"
+optional = true
+
+[dev-dependencies]
+approx = { workspace = true }
+proptest = { workspace = true }
+csv = { workspace = true }
+criterion = { workspace = true }

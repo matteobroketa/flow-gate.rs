@@ -1,0 +1,41 @@
+# Build artifacts
+/target/
+
+# Backup files
+**/*.rs.bk
+
+# Compiled binaries (platform-specific)
+*.dll
+*.so
+*.dylib
+*.exe
+*.pdb
+*.ilk
+*.exp
+*.lib
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Rust analyzer
+.rust-analyzer/
+
+# Benchmarks / reports
+*.bench
+criterion/
+
+# Local overrides
+Cargo.lock.local
+
+# Sensitive / temporary files
+*.key
+*.pem
+*.env

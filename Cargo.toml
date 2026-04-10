@@ -1,0 +1,43 @@
+[workspace]
+members = [
+    "crates/flow-gate-core",
+    "crates/flow-gate-xml",
+    "crates/flow-gate",
+    "crates/flow-gate-ffi",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+license = "MIT"
+authors = ["matteobroketa"]
+homepage = "https://github.com/matteobroketa/flow-gate.rs"
+repository = "https://github.com/matteobroketa/flow-gate.rs"
+readme = "README.md"
+
+[workspace.dependencies]
+flow-gate-core = { path = "crates/flow-gate-core" }
+flow-gate-xml = { path = "crates/flow-gate-xml" }
+flow-gate = { path = "crates/flow-gate" }
+flow-gate-ffi = { path = "crates/flow-gate-ffi" }
+rayon = "1.9"
+thiserror = "1.0"
+smallvec = { version = "1.13", features = ["union"] }
+bitvec = "1.0"
+indexmap = "2.2"
+approx = "0.5"
+proptest = "1.4"
+criterion = { version = "0.5", features = ["html_reports"] }
+csv = "1.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1.0"
+quick-xml = { version = "0.36", features = ["encoding"] }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+strip = "symbols"
+panic = "abort"

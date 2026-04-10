@@ -1,0 +1,24 @@
+[package]
+name = "flow-gate"
+description = "Facade crate for flow-gate with compliance runner and benchmark binaries"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+homepage.workspace = true
+repository.workspace = true
+documentation = "https://docs.rs/flow-gate"
+readme.workspace = true
+keywords = ["flow-cytometry", "gating-ml", "bioinformatics", "compliance"]
+categories = ["science", "command-line-utilities"]
+
+[dependencies]
+flow-gate-core = { version = "0.1.0", path = "../flow-gate-core" }
+flow-gate-xml = { version = "0.1.0", path = "../flow-gate-xml" }
+anyhow = "1.0"
+flow-fcs = "0.2.2"
+csv.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2 = "0.10"
