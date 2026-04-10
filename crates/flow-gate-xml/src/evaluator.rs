@@ -250,12 +250,12 @@ fn materialize_compensation(
     let mut out = raw_columns.clone();
     for (row_idx, fluor) in spec.fluorochromes.iter().enumerate() {
         let mut values = vec![0.0_f64; n_events];
-        for event_idx in 0..n_events {
+        for (event_idx, value) in values.iter_mut().enumerate().take(n_events) {
             let mut acc = 0.0_f64;
             for col_idx in 0..m {
                 acc += unmixing[row_idx * m + col_idx] * detector_cols[col_idx][event_idx];
             }
-            values[event_idx] = acc;
+            *value = acc;
         }
         out.insert(fluor.as_str().to_string(), values);
     }

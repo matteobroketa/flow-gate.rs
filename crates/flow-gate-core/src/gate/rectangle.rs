@@ -62,9 +62,9 @@ impl Gate for RectangleGate {
                 if !coord.is_finite() {
                     return false;
                 }
-                let above_min = dim.min.map_or(true, |lo| coord >= lo);
+                let above_min = dim.min.is_none_or(|lo| coord >= lo);
                 // Gating-ML ranges are [min, max), i.e. inclusive min and exclusive max.
-                let below_max = dim.max.map_or(true, |hi| coord < hi);
+                let below_max = dim.max.is_none_or(|hi| coord < hi);
                 above_min && below_max
             })
     }
