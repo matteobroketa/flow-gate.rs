@@ -12,8 +12,8 @@ keywords = ["flow-cytometry", "gating-ml", "bioinformatics", "compliance"]
 categories = ["science", "command-line-utilities"]
 
 [dependencies]
-flow-gate-core = { path = "../flow-gate-core" }
-flow-gate-xml = { path = "../flow-gate-xml" }
+flow-gate-core = { version = "0.1.0", path = "../flow-gate-core" }
+flow-gate-xml = { version = "0.1.0", path = "../flow-gate-xml" }
 anyhow = "1.0"
 flow-fcs = "0.2.2"
 csv.workspace = true

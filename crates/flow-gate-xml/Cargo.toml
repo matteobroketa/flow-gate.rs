@@ -12,7 +12,7 @@ keywords = ["flow-cytometry", "gating-ml", "xml", "bioinformatics", "parser"]
 categories = ["science", "parser-implementations", "encoding"]
 
 [dependencies]
-flow-gate-core = { path = "../flow-gate-core" }
+flow-gate-core = { version = "0.1.0", path = "../flow-gate-core" }
 quick-xml = { workspace = true }
 thiserror = { workspace = true }
 indexmap = { workspace = true }
