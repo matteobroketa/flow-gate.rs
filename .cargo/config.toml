@@ -1,0 +1,8 @@
+[build]
+target-dir = "target"
+
+[alias]
+xcheck = "check --workspace --all-features"
+xtest = "test --workspace --all-features"
+xlint = "clippy --workspace --all-features -- -D warnings"
+xdoc = "doc --workspace --no-deps"

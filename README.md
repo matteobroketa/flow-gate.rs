@@ -268,7 +268,6 @@ The remaining 6 Set 2 failures (transformed Polygon gates) are a **shared issue 
 
 The table below shows results from Floreada.io, flowCore (the de facto GatingML reference implementation), and the results included in the spec by the spec authors:
 
-![Validation comparison table showing Spec, flowCore, and Floreada.io results with green (pass) and red (fail) highlighting]
 
 **Legend:**
 - ✅ Matches correct result (flowCore, Floreada.io, and flow-gate.rs agree)
